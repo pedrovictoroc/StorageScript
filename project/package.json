@@ -1,6 +1,15 @@
 {
-  "name": "project",
+  "name": "StorageScript",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": ""
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3",
+    "sucrase": "^3.13.0",
+    "typescript": "^3.8.3"
+  }
 }
