@@ -23,7 +23,7 @@ class fileReader {
 
     readFile(path:string, callback:Function):void{
         if(!this.existsSync(path) ){
-            callback(undefined, "The specified file cannot be found!");
+            callback("The specified file cannot be found!", undefined);
             return;
         }
 
