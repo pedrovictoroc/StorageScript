@@ -24,7 +24,7 @@ class fileReader {
     readFile(path:string, callback:Function, option?:string):void{
 
         if(!this.existsSync(path) ){
-            callback("The specified file cannot be found!", undefined);
+            callback("The specified file could not be found!", undefined);
             return;
         }
         if(!option || option == 'b')
@@ -57,8 +57,24 @@ class fileReader {
         }
         else
             callback(`Unknown option "${option}", please, choose either 'b'[default], 'j' or 's'`, undefined);
-        
     }
+
+    writeFile(path:string, content:string, callback:Function, option?:string):void{
+        const exists: boolean = this.existsSync(path);
+        if( option == 'o' && !exists){
+            callback("The specified file could not be found!");
+        }
+        else if( ((option == 'o' || !option || option == 'c') && exists) || option == 'c' && !exists){
+
+            fs.writeFile(path, content, (e_inside)=>{
+                callback(e_inside);
+            });
+        }
+        else{
+            callback("The specified file could not be found!");
+        }
+    }
+
     
 }
 
@@ -66,7 +82,7 @@ const a = new fileReader();
 
 //console.log(a.existsSync(pathResolve.resolve(__dirname, "file.json")));
 
-
+/*
 console.log(pathResolve.resolve(__dirname, "arquivo_teste.json"));
 
 a.readFile(pathResolve.resolve(__dirname, "arquivo_teste.json"), (e, data) => {
@@ -76,7 +92,21 @@ a.readFile(pathResolve.resolve(__dirname, "arquivo_teste.json"), (e, data) => {
     } 
     console.log("DATA:", data);
 });// or 's' for string or 'j' for javascript object
+*/
 
+const file_contents = JSON.stringify({
+    teste: 23,
+    test2: 46
+}, null, 4);
 
+console.log(file_contents)
 
+a.writeFile(pathResolve.resolve(__dirname, "arquivo_tese2.json"), file_contents, (e)=>{
+    if(e){
+        console.log("ERRO:", e);
+    }
+    else{
+        console.log("Sucess!")
+    }
+}, 'o'); // 'c' : creates the archive if it doenst exists, 'o' only overwrite already existing files
 
