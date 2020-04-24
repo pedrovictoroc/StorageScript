@@ -61,21 +61,46 @@ class fileReader {
 
     writeFile(path:string, content:string, callback:Function, option?:string):void{
         const exists: boolean = this.existsSync(path);
-        if( option == 'o' && !exists){
+        if( option == 'o' && !exists)
             callback("The specified file could not be found!");
-        }
-        else if( ((option == 'o' || !option || option == 'c') && exists) || option == 'c' && !exists){
-
-            fs.writeFile(path, content, (e_inside)=>{
-                callback(e_inside);
-            });
-        }
-        else{
-            callback("The specified file could not be found!");
-        }
+        
+        else if( ((option == 'o' || !option || option == 'c') && exists) || option == 'c' && !exists)
+            fs.writeFile(path, content, callback);
+        
+        else
+            callback(`Unknown option "${option}, please, choose either 'o' or 'c'`);
+        
     }
 
-    
+    deleteFile(path:string, callback:Function, option?:string):void{
+        let isDir:boolean;
+        try{
+            isDir = fs.lstatSync(path).isDirectory()
+        }catch(e){
+            callback("The specified file could not be found!");
+            return;
+        }
+
+        if((!option || option == 'f') && !isDir){
+            // Deletes a file
+            fs.unlink(path, callback);
+        }
+        else if((!option || option == 'f') && isDir){
+            // Cant delete directory without flag d
+            callback(`This function with the flag 'f' can only delete files.\nTo delete directories, use the flag 'd'.`);       
+        }
+        else if(option == 'd' && isDir){
+            // Deletes a directory
+            fs.rmdir(path, {recursive:true}, callback);
+        }
+        else if(option == 'd' && !isDir){
+            // Cant delete a file without flag f
+            callback(`This function with the flag 'd' can only delete directories.\nTo delete files, use the flag 'f'.`);
+        }
+        else{
+            callback(`Unknown option "${option}, please, choose either 'o' or 'c'`);
+        }
+    }
 }
 
 const a = new fileReader();
@@ -99,8 +124,8 @@ const file_contents = JSON.stringify({
     test2: 46
 }, null, 4);
 
-console.log(file_contents)
-
+//console.log(file_contents)
+/*
 a.writeFile(pathResolve.resolve(__dirname, "arquivo_tese2.json"), file_contents, (e)=>{
     if(e){
         console.log("ERRO:", e);
@@ -109,4 +134,14 @@ a.writeFile(pathResolve.resolve(__dirname, "arquivo_tese2.json"), file_contents,
         console.log("Sucess!")
     }
 }, 'o'); // 'c' : creates the archive if it doenst exists, 'o' only overwrite already existing files
+*/
 
+
+a.deleteFile(pathResolve.resolve(__dirname, "not_so_empy_folder"), (e)=>{
+    if(e){
+        console.log("ERRO:", e);
+    }
+    else{
+        console.log("File deleted!");
+    }
+}, 'd');
