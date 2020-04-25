@@ -105,9 +105,6 @@ class fileReader {
 
 const a = new fileReader();
 
-//console.log(a.existsSync(pathResolve.resolve(__dirname, "file.json")));
-
-/*
 console.log(pathResolve.resolve(__dirname, "arquivo_teste.json"));
 
 a.readFile(pathResolve.resolve(__dirname, "arquivo_teste.json"), (e, data) => {
@@ -117,7 +114,6 @@ a.readFile(pathResolve.resolve(__dirname, "arquivo_teste.json"), (e, data) => {
     } 
     console.log("DATA:", data);
 });// or 's' for string or 'j' for javascript object
-*/
 
 const file_contents = JSON.stringify({
     teste: 23,
@@ -134,7 +130,6 @@ a.writeFile(pathResolve.resolve(__dirname, "arquivo_tese2.json"), file_contents,
         console.log("Sucess!")
     }
 }, 'o'); // 'c' : creates the archive if it doenst exists, 'o' only overwrite already existing files
-*/
 
 
 a.deleteFile(pathResolve.resolve(__dirname, "not_so_empy_folder"), (e)=>{
@@ -145,3 +140,4 @@ a.deleteFile(pathResolve.resolve(__dirname, "not_so_empy_folder"), (e)=>{
         console.log("File deleted!");
     }
 }, 'd');
+*/
